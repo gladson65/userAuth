@@ -73,3 +73,19 @@ export async function login(req, res) {
         return res.status(500).json({error: error.message});
     }
 }
+
+// get all the users
+export async function getAllUsers(req, res) {
+    
+    try {
+        const users = await userModel.find({});
+        // if no users
+        if (!users) return res.staus(400).json({message: 'sorry! no user there.'});
+
+        return res.status(200).json({allUsers: users});
+    }
+    catch(error) {
+        return res.status(500).json({error: error.message});
+    }
+    
+}
