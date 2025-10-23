@@ -1,4 +1,6 @@
 import userModel from "../models/users.model.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 // sign up or register function
 export async function register(req, res) {
@@ -29,7 +31,7 @@ export async function register(req, res) {
         const newUser = new userModel({
             username,
             email,
-            password
+            password: bcrypt.hashSync(password, 10)
         })
 
         // save the new user
@@ -54,9 +56,18 @@ export async function login(req, res) {
 
         // find the user using email
         let getUser = await userModel.find({email: email});
-        if (!getUser) return res.status(400).json({message: 'user is not registered'});
+        if (!getUser) return res.status(400).json({message: 'user is not registered'})
+        else {
+            // comparing password
+            let isValidPassword = bcrypt.compareSync(password, getUser.password);
+            if (!isValidPassword) return res.status(400).json({message: "Password is incorrect"});
 
-        return res.status(200).json({user: getUser});
+            // generating jwt token
+            let token = jwt.sign({id: getUser._id}, 'gladKey', {expiresIn: '1h'});
+            return res.status(200).json({user: getUser, jwToken: token});
+
+        }
+        
     }
     catch(error) {
         return res.status(500).json({error: error.message});
