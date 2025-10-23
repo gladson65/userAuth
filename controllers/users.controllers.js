@@ -42,3 +42,23 @@ export async function register(req, res) {
     }
     
 }
+
+export async function login(req, res) {
+
+    // destructuring from the req body
+    const { email, password } = req.body;
+
+    try {
+        // key validation
+        if (!email, !password) return res.status(400).json({message: "check all fields like email and password are coming or not"});
+
+        // find the user using email
+        let getUser = await userModel.find({email: email});
+        if (!getUser) return res.status(400).json({message: 'user is not registered'});
+
+        return res.status(200).json({user: getUser});
+    }
+    catch(error) {
+        return res.status(500).json({error: error.message});
+    }
+}
