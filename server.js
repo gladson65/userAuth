@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import userRouter from './routes/users.routes,js';
+import userRouter from './routes/users.routes.js';
 
 // create a server
 const userServer = new express();
