@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import userRouter from './routes/users.routes,js';
 
 // create a server
 const userServer = new express();
@@ -19,3 +20,7 @@ db.on('open', ()=> {
 db.on('error', ()=> {
     console.log("mongoDB database connection is failed")
 })
+
+
+// passing userServer into userRouter
+userRouter(userServer);
