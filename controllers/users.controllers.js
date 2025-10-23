@@ -22,7 +22,7 @@ export async function register(req, res) {
         }
 
         // check email is already is in the db or not
-        let checkUser = await userModel.find({email: email});
+        let checkUser = await userModel.findOne({email: email});
         if (checkUser) return res.status(400).json({message: 'User already exist, try with another email'});
 
         // if a user is new
