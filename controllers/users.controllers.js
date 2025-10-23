@@ -55,7 +55,7 @@ export async function login(req, res) {
         if (!email, !password) return res.status(400).json({message: "check all fields like email and password are coming or not"});
 
         // find the user using email
-        let getUser = await userModel.find({email: email});
+        let getUser = await userModel.findOne({email: email});
         if (!getUser) return res.status(400).json({message: 'user is not registered'})
         else {
             // comparing password
